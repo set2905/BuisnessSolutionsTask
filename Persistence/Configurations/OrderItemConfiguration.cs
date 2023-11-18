@@ -11,12 +11,5 @@ internal sealed class OrderItemConfiguration : IEntityTypeConfiguration<OrderIte
         builder.HasKey(i => i.Id);
         builder.Property(i => i.Id).HasConversion(id => id.Value,
                              val => new(val));
-
-        builder.HasOne<Order>()
-            .WithMany()
-            .HasForeignKey(i => i.OrderId)
-            .IsRequired();
-
-
     }
 }

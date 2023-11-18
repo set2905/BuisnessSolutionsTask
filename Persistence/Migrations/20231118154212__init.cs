@@ -51,8 +51,7 @@ namespace Persistence.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderId1 = table.Column<int>(type: "int", nullable: true)
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,11 +62,6 @@ namespace Persistence.Migrations
                         principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderItem_Order_OrderId1",
-                        column: x => x.OrderId1,
-                        principalTable: "Order",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -85,11 +79,6 @@ namespace Persistence.Migrations
                 name: "IX_OrderItem_OrderId",
                 table: "OrderItem",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderId1",
-                table: "OrderItem",
-                column: "OrderId1");
         }
 
         /// <inheritdoc />
