@@ -1,12 +1,12 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace DomainEvent.Entities;
+namespace Domain.Entities;
 
 public sealed class OrderItem
 {
-    private OrderItem(OrderItemId id, OrderId orderId, string name, decimal quantity, string unit)
+    internal OrderItem(OrderId orderId, string name, decimal quantity, string unit)
     {
-        Id=id;
+        Id=new(0);
         OrderId=orderId;
         Name=name;
         Quantity=quantity;
@@ -19,11 +19,13 @@ public sealed class OrderItem
     public decimal Quantity { get; private set; }
     public string Unit { get; private set; }
 
-    public static OrderItem Create(OrderItemId id, OrderId orderId, string name, decimal quantity, string unit)
+
+    public static OrderItem Create(OrderId orderId, string name, decimal quantity, string unit)
     {
         Guard.Against.NullOrEmpty(name, nameof(name), "Order item name cannot be empty");
         Guard.Against.NullOrEmpty(unit, nameof(unit), "Order item unit cannot be empty");
-        var orderItem = new OrderItem(id, orderId, name, quantity, unit);
+        Guard.Against.Negative(quantity, nameof(quantity), "Quantity cannot be negative");
+        var orderItem = new OrderItem(orderId, name, quantity, unit);
         return orderItem;
     }
 }
