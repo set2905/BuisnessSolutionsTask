@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\DomainEvent\Domain.csproj" />
   </ItemGroup>
 
@@ -35,6 +36,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
