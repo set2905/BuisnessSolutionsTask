@@ -14,7 +14,7 @@ internal sealed class OrderItemConfiguration : IEntityTypeConfiguration<OrderIte
 
         builder.HasOne<Order>()
             .WithMany()
-            .HasForeignKey(i => i.Id)
+            .HasForeignKey(i => i.OrderId)
             .IsRequired();
 
 

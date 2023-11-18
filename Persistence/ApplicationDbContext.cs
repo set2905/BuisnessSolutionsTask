@@ -2,9 +2,9 @@
 
 namespace Persistence;
 
-public class AppDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions options) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
 
@@ -14,6 +14,6 @@ public class AppDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 }

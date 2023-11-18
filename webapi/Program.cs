@@ -10,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication()
-                .AddPersistence();
+                .AddPersistence(builder.Configuration);
 
 builder.Host.UseSerilog((context, config) =>
 config.ReadFrom.Configuration(context.Configuration));

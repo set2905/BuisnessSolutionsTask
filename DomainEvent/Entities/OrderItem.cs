@@ -4,6 +4,10 @@ namespace Domain.Entities;
 
 public sealed class OrderItem
 {
+    private OrderItem()
+    {
+    }
+
     internal OrderItem(OrderId orderId, string name, decimal quantity, string unit)
     {
         Id=new(0);

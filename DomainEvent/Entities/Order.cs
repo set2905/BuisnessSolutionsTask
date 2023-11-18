@@ -6,6 +6,9 @@ public sealed class Order
 {
     private readonly HashSet<OrderItem> items = new();
 
+    private Order()
+    {
+    }
     private Order(string number, DateTime date, ProviderId providerId)
     {
         Id=new(0);
