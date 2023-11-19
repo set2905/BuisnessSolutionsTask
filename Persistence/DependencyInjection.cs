@@ -1,7 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Repositories;
@@ -21,6 +20,7 @@ public static class DependencyInjection
         });
 
         services.AddTransient<IOrderRepository, OrderRepository>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

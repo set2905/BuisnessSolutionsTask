@@ -17,6 +17,8 @@ internal class OrderRepository : IOrderRepository
     public async Task<Order?> GetByIdAsync(OrderId orderId)
     {
         return await dbContext.Set<Order>()
+            .Include(x => x.Items)
+            .Include(x => x.Provider)
             .SingleOrDefaultAsync(x => x.Id==orderId);
     }
 
