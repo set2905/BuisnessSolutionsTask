@@ -13,9 +13,9 @@ public class ProviderRepository : IProviderRepository
         this.dbContext=dbContext;
     }
 
-    public async Task<Provider?> GetByIdAsync(ProviderId id)
+    public async Task<bool> ProviderExists(ProviderId id)
     {
-        return await dbContext.Set<Provider>()
-            .SingleOrDefaultAsync(x => x.Id==id);
+        return await dbContext.Set<Provider>().AnyAsync(x => x.Id== id);
     }
+
 }
