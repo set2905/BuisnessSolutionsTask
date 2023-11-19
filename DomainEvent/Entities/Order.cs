@@ -1,4 +1,7 @@
 ﻿using Ardalis.GuardClauses;
+using Ardalis.Result;
+using Ardalis.Result.FluentValidation;
+using Domain.Entities.Validation;
 
 namespace Domain.Entities;
 
@@ -29,11 +32,13 @@ public sealed class Order
         items.Add(item);
         return item;
     }
-    public static Order Create(string number, DateTime date, ProviderId providerId)
+    public static Result<Order> Create(string number, DateTime date, ProviderId providerId)
     {
-        Guard.Against.NullOrEmpty(number, nameof(number), "The order number must not be empty");
         Order order = new Order(number, date, providerId);
-        return order;
+        var validator = new OrderValidator();
+        var validation = validator.Validate(order);
+        if (!validation.IsValid) return Result<Order>.Invalid(validation.AsErrors());
+        return Result.Success(order);
     }
 }
 
