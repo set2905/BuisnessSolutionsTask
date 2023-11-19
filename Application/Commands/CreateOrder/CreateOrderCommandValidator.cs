@@ -6,6 +6,6 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<CreateOrderC
 {
     public CreateOrderCommandValidator()
     {
-        RuleFor(x => x.number).NotEmpty().WithMessage("Order number cannot be empty");
+        RuleFor(x => x.orderDto.Number).NotEmpty().WithMessage("Order number cannot be empty");
     }
 }
