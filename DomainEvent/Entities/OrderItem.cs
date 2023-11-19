@@ -1,8 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using Ardalis.Result;
-using Ardalis.Result.FluentValidation;
-using Domain.Entities.Validation;
-using FluentValidation;
 
 namespace Domain.Entities;
 
@@ -28,13 +24,13 @@ public sealed class OrderItem
     public string Unit { get; private set; }
 
 
-    public static Result<OrderItem> Create(OrderId orderId, string name, decimal quantity, string unit)
+    public static OrderItem Create(OrderId orderId, string name, decimal quantity, string unit)
     {
-        OrderItem orderItem = new(orderId, name, quantity, unit);
-        OrderItemValidator validator = new();
-        var validation = validator.Validate(orderItem);
-        if (!validation.IsValid) return Result<OrderItem>.Invalid(validation.AsErrors());
-        return Result.Success(orderItem);
+        Guard.Against.NullOrEmpty(name, nameof(name), "Order item name cannot be empty");
+        Guard.Against.NullOrEmpty(unit, nameof(unit), "Order item unit cannot be empty");
+        Guard.Against.Negative(quantity, nameof(quantity), "Quantity cannot be negative");
+        var orderItem = new OrderItem(orderId, name, quantity, unit);
+        return orderItem;
     }
 }
 public record OrderItemId(int Value);
