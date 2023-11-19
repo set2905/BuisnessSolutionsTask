@@ -27,8 +27,6 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand>
         if (!validation.IsValid)
             return Result.Invalid(validation.AsErrors());
 
-
-
         Order order = Order.Create(request.orderDto.Number, request.orderDto.Date, request.orderDto.ProviderId);
         orderRepository.Add(order);
         await unitOfWork.SaveChangesAsync();

@@ -12,8 +12,8 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<CreateOrderC
         RuleFor(x => x.orderDto.Number).NotEmpty().WithMessage("Order number cannot be empty");
         RuleFor(x => x.orderDto.ProviderId).MustAsync(async (id, cancellation) =>
         {
-            bool exists = await providerRepository.ProviderExists(id);
-            return !exists;
+            bool exists = await this.providerRepository.ProviderExists(id);
+            return exists;
         }).WithMessage("Provider not found");
     }
 }
