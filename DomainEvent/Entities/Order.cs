@@ -21,6 +21,7 @@ public sealed class Order
     public string Number { get; private set; }
     public DateTime Date { get; private set; }
     public ProviderId ProviderId { get; private set; }
+    public Provider Provider { get; private set; } = null!;
     public IReadOnlyCollection<OrderItem> Items => items;
 
     public OrderItem AddOrderItem(string name, decimal quantity, string unit)

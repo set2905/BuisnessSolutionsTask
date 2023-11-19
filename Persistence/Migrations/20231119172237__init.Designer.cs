@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Domain;
+using Persistence;
 
 #nullable disable
 
-namespace Domain.Migrations
+namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231118154212__init")]
+    [Migration("20231119172237__init")]
     partial class _init
     {
         /// <inheritdoc />
@@ -92,11 +92,13 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.HasOne("Domain.Entities.Provider", null)
+                    b.HasOne("Domain.Entities.Provider", "Provider")
                         .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderItem", b =>

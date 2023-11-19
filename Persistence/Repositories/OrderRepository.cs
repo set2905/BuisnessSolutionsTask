@@ -20,13 +20,16 @@ internal class OrderRepository : IOrderRepository
             .SingleOrDefaultAsync(x => x.Id==orderId);
     }
 
-    public async Task<List<Order>> GetOrders(int page)
+    public async Task<List<Order>> GetOrders(int page, DateTime startDate, DateTime endDate)
     {
-        return await dbContext.Set<Order>()
-            .Skip(page*DEFAULT_PAGESIZE)
-            .Take(DEFAULT_PAGESIZE)
-            .Include(x => x.Items)
-            .ToListAsync();
+        var baseQuery = dbContext.Set<Order>()
+             .Where(x => x.Date>=startDate && x.Date<=endDate)
+             .Skip(page*DEFAULT_PAGESIZE)
+             .Take(DEFAULT_PAGESIZE)
+             .Include(x => x.Items)
+             .Include(x => x.Provider);
+
+        return await baseQuery.ToListAsync();
     }
 
     public void Add(Order order)

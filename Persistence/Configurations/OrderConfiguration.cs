@@ -12,7 +12,7 @@ internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.Id).HasConversion(id => id.Value,
                              val => new(val));
 
-        builder.HasOne<Provider>()
+        builder.HasOne(o => o.Provider)
                .WithMany()
                .HasForeignKey(o => o.ProviderId)
                .IsRequired();

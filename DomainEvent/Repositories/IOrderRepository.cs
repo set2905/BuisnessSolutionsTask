@@ -6,5 +6,5 @@ public interface IOrderRepository
 {
     void Add(Order order);
     Task<Order?> GetByIdAsync(OrderId orderId);
-    Task<List<Order>> GetOrders(int page);
+    Task<List<Order>> GetOrders(int page, DateTime startDate, DateTime endDate);
 }
