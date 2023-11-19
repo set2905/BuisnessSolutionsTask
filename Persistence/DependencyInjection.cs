@@ -20,6 +20,7 @@ public static class DependencyInjection
         });
 
         services.AddTransient<IOrderRepository, OrderRepository>();
+        services.AddTransient<IProviderRepository, ProviderRepository>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         return services;

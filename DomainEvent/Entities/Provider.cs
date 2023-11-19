@@ -2,7 +2,7 @@
 
 public sealed class Provider
 {
-    private Provider()
+    public Provider()
     {
     }
 
