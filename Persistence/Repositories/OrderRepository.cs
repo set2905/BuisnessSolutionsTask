@@ -1,9 +1,10 @@
 ﻿using Domain.Entities;
+using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
 
-internal class OrderRepository
+internal class OrderRepository : IOrderRepository
 {
     private const int DEFAULT_PAGESIZE = 10;
     private readonly ApplicationDbContext dbContext;
@@ -15,12 +16,17 @@ internal class OrderRepository
 
     public async Task<Order?> GetByIdAsync(OrderId orderId)
     {
-        return await dbContext.Set<Order>().SingleOrDefaultAsync(x => x.Id==orderId);
+        return await dbContext.Set<Order>()
+            .SingleOrDefaultAsync(x => x.Id==orderId);
     }
 
     public async Task<List<Order>> GetOrders(int page)
     {
-        return await dbContext.Set<Order>().Skip(page*DEFAULT_PAGESIZE).Take(DEFAULT_PAGESIZE).ToListAsync();
+        return await dbContext.Set<Order>()
+            .Skip(page*DEFAULT_PAGESIZE)
+            .Take(DEFAULT_PAGESIZE)
+            .Include(x => x.Items)
+            .ToListAsync();
     }
 
     public void Add(Order order)

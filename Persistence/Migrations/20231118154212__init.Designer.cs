@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Persistence;
+using Domain;
 
 #nullable disable
 
-namespace Persistence.Migrations
+namespace Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20231118154212__init")]
