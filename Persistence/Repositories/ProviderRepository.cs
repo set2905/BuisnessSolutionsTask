@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
 
-public class ProviderRepository : IProviderRepository
+public sealed class ProviderRepository : IProviderRepository
 {
     private const int DEFAULT_PAGESIZE = 10;
     private readonly ApplicationDbContext dbContext;

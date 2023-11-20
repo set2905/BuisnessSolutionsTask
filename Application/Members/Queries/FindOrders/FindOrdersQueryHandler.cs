@@ -27,7 +27,7 @@ public sealed class FindOrdersQueryHandler : IQueryHandler<FindOrdersQuery, Orde
         if (!validation.IsValid)
             return Result.Invalid(validation.AsErrors());
 
-        OrderDto[] orders = (await orderRepository.FindOrdersAsync(request.startDate,
+        OrderDto[] orders = (await orderRepository.GetOrdersAsync(request.startDate,
                                                                    request.endDate,
                                                                    request.page-1,
                                                                    request.filter))

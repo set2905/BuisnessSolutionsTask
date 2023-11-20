@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Persistence.Repositories;
 
 
-internal class OrderRepository : IOrderRepository
+public sealed class OrderRepository : IOrderRepository
 {
     private const int DEFAULT_PAGESIZE = 10;
     private readonly ApplicationDbContext dbContext;
@@ -15,7 +15,7 @@ internal class OrderRepository : IOrderRepository
         this.dbContext=dbContext;
     }
 
-    public async Task<List<Order>> FindOrdersAsync(DateTime startDate,
+    public async Task<List<Order>> GetOrdersAsync(DateTime startDate,
                                                    DateTime endDate,
                                                    int page,
                                                    OrderFilter? filter)
@@ -54,6 +54,18 @@ internal class OrderRepository : IOrderRepository
              .Include(x => x.Provider);
         return await baseQuery.ToListAsync();
     }
+
+    public async Task<List<string>> GetOrderNumbersAsync(string? search)
+    {
+        var query = dbContext.Set<Order>().Select(x => x.Number);
+        if (search!=null)
+            query=query.Where(x => x.Contains(search)).Distinct();
+        return await query.Take(DEFAULT_PAGESIZE).ToListAsync();
+    }
+
+
+
+
 
     public void Add(Order order)
     {
