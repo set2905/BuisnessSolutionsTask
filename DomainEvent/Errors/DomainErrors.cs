@@ -6,6 +6,7 @@ public static class DomainErrors
     {
         public static string NotFound => "Заказ не найден";
         public static string EmptyNumber => "Номер заказа не может быть пустым";
+        public static string NumberEqualsToItemName => "Номер заказа не может совпадать с  именем любого из его элементов";
         public static string MultiIndexNotUnique => "Невозможно создать несколько заказов от одного поставщика с одинаковым номером";
         public static string IdNull => "Id заказа не может быть пустым";
         public static string IncorrectDateSpan => "Дата начала выборки не может быть позже даты конца выборки";
