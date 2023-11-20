@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Domain.Errors;
 
 namespace Domain.Entities;
 
@@ -32,7 +33,7 @@ public sealed class Order
     }
     public static Order Create(string number, DateTime date, ProviderId providerId)
     {
-        Guard.Against.NullOrEmpty(number, nameof(number), "The order number must not be empty");
+        Guard.Against.NullOrEmpty(number, nameof(number), DomainErrors.Order.EmptyNumber);
         Order order = new Order(number, date, providerId);
         return order;
     }
