@@ -1,4 +1,5 @@
 ﻿using Application.Members.Queries.FindDistinctFilterValues.OrderItemNames;
+using Application.Members.Queries.FindDistinctFilterValues.OrderItemUnits;
 using Application.Members.Queries.FindDistinctFilterValues.OrderNumbers;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
@@ -30,6 +31,15 @@ public sealed class FilterValuesController : ApiController
     public async Task<Result<List<string>>> FindOrderItemNames(string? search, CancellationToken cancellationToken)
     {
         var query = new FindOrderItemNamesQuery(search);
+        return await sender.Send(query, cancellationToken);
+    }
+
+    [HttpGet]
+    [Route("findOrderItemUnits")]
+    [TranslateResultToActionResult]
+    public async Task<Result<List<string>>> FindOrderItemUnits(string? search, CancellationToken cancellationToken)
+    {
+        var query = new FindOrderItemUnitsQuery(search);
         return await sender.Send(query, cancellationToken);
     }
 }
