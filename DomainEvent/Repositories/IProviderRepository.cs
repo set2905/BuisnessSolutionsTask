@@ -4,7 +4,7 @@ namespace Persistence.Repositories
 {
     public interface IProviderRepository
     {
-        Task<List<Provider>> GetProvidersAsync(string? search, int skipPageCount);
+        Task<List<Provider>> GetProvidersAsync(string? search);
         Task<bool> ProviderExists(ProviderId id);
     }
 }

@@ -19,9 +19,9 @@ public sealed class ProvidersController : ApiController
     [HttpGet]
     [Route("find")]
     [TranslateResultToActionResult]
-    public async Task<Result<ProviderDto[]>> FindProviders(string? search, int page, CancellationToken cancellationToken)
+    public async Task<Result<ProviderDto[]>> FindProviders(string? search, CancellationToken cancellationToken)
     {
-        var command = new FindProvidersQuery(search, page);
+        var command = new FindProvidersQuery(search);
         return await sender.Send(command, cancellationToken);
     }
 }

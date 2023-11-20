@@ -19,15 +19,14 @@ public sealed class ProviderRepository : IProviderRepository
         return await dbContext.Set<Provider>().AnyAsync(x => x.Id== id);
     }
 
-    public async Task<List<Provider>> GetProvidersAsync(string? search, int skipPageCount)
+    public async Task<List<Provider>> GetProvidersAsync(string? search)
     {
-        Guard.Against.Negative(skipPageCount, "skipPageCount");
         var query = dbContext.Set<Provider>().AsQueryable();
         if (search!=null)
         {
             query=query.Where(x => x.Name.Contains(search));
         }
-        return await query.Skip(skipPageCount*DEFAULT_PAGESIZE).Take(DEFAULT_PAGESIZE).ToListAsync();
+        return await query.Take(DEFAULT_PAGESIZE).ToListAsync();
     }
 
 }

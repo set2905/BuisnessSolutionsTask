@@ -20,12 +20,7 @@ public sealed class FindProvidersQueryHandler : IQueryHandler<FindProvidersQuery
     public async Task<Result<ProviderDto[]>> Handle(FindProvidersQuery request,
                                                     CancellationToken cancellationToken)
     {
-        var validator = new FindProvidersQueryValidator();
-        var validation = await validator.ValidateAsync(request);
-        if (!validation.IsValid)
-            return Result.Invalid(validation.AsErrors());
-
-        ProviderDto[] providers = (await providerRepository.GetProvidersAsync(request.search, request.page-1))
+        ProviderDto[] providers = (await providerRepository.GetProvidersAsync(request.search))
             .ConvertAll(mapper.Map<ProviderDto>)
             .ToArray();
         return Result.Success(providers);
