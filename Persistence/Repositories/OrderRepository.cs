@@ -67,13 +67,15 @@ internal class OrderRepository : IOrderRepository
     private IQueryable<Order> ApplyFilters(IQueryable<Order> query, OrderFilter filter)
     {
         if (filter.numberFilter!=null)
-            query=query.Where(o => filter.numberFilter.Any(n => o.Number.Contains(n)));
+            query=query.Where(o => filter.numberFilter.Any(n => o.Number.Equals(n)));
         if (filter.providerFilter!=null)
             query=query.Where(o => filter.providerFilter.Any(id => id==o.ProviderId));
         if (filter.orderItemNameFilter!=null)
-            query=query.Where(o => filter.orderItemNameFilter.Any(f => o.Items.Any(i => i.Name.Contains(f))));
+            query=query.Where(o => o.Items.Any(i => filter.orderItemNameFilter.Contains(i.Name)));
         if (filter.orderItemUnitFilter!=null)
-            query=query.Where(o => filter.orderItemUnitFilter.Any(f => o.Items.Any(i => i.Unit.Contains(f))));
+            query=query.Where(o => o.Items.Any(i => filter.orderItemUnitFilter.Contains(i.Unit)));
+
+
         return query;
     }
 }
