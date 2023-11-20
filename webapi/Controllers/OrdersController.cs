@@ -17,6 +17,14 @@ public sealed class OrdersController : ApiController
     {
     }
 
+    [HttpGet]
+    [Route("find")]
+    [TranslateResultToActionResult]
+    public async Task<Result> FindOrders(, CancellationToken cancellationToken)
+    {
+
+    }
+
     [HttpPost]
     [Route("create")]
     [TranslateResultToActionResult]
