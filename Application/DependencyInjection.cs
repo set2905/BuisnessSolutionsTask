@@ -13,6 +13,7 @@ public static class DependencyInjection
                 assembly));
 
         services.AddValidatorsFromAssembly(assembly);
+        services.AddAutoMapper(assembly);
 
         return services;
     }

@@ -3,7 +3,7 @@ using Domain.Repositories;
 using FluentValidation;
 using Persistence.Repositories;
 
-namespace Application.Commands.CreateOrder;
+namespace Application.Messaging.Commands.CreateOrder;
 
 public sealed class CreateOrderCommandValidator : AbstractValidator<OrderCommand>
 {

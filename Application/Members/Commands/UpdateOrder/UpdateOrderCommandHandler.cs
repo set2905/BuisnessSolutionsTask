@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Commands.UpdateOrder;
 using Ardalis.Result;
 using Ardalis.Result.FluentValidation;
 using Domain.Entities;
@@ -7,7 +8,7 @@ using Domain.Repositories;
 using Persistence;
 using Persistence.Repositories;
 
-namespace Application.Commands.UpdateOrder;
+namespace Application.Messaging.Commands.UpdateOrder;
 
 internal class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
 {
@@ -17,9 +18,9 @@ internal class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
 
     public UpdateOrderCommandHandler(IUnitOfWork unitOfWork, IOrderRepository orderRepository, IProviderRepository providerRepository)
     {
-        this.unitOfWork=unitOfWork;
-        this.orderRepository=orderRepository;
-        this.providerRepository=providerRepository;
+        this.unitOfWork = unitOfWork;
+        this.orderRepository = orderRepository;
+        this.providerRepository = providerRepository;
     }
 
     public async Task<Result> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
@@ -37,13 +38,13 @@ internal class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
                      request.orderDto.ProviderId);
         foreach (var item in request.orderDto.Items)
         {
-            if (item.Id==null)
+            if (item.Id == null)
             {
                 order.AddOrderItem(item.Name, item.Quantity, item.Unit);
             }
             else
             {
-                OrderItem? foundItem = order.Items.SingleOrDefault(x => x.Id==item.Id);
+                OrderItem? foundItem = order.Items.SingleOrDefault(x => x.Id == item.Id);
                 if (foundItem == null) return Result.NotFound($"{DomainErrors.OrderItem.NotFound} {item.Name}");
                 foundItem.Modify(item.Name, item.Quantity, item.Unit);
             }

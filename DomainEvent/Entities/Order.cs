@@ -38,7 +38,7 @@ public sealed class Order
         Date = date;
         ProviderId = providerId;
     }
-    public static Order Create(string number, DateTime date, ProviderId providerId, IEnumerable<OrderItem> items)
+    public static Order Create(string number, DateTime date, ProviderId providerId, IList<OrderItem> items)
     {
         Guard.Against.NullOrEmpty(number, nameof(number), DomainErrors.Order.EmptyNumber);
         Order order = new Order(number, date, providerId, items);

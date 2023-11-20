@@ -1,10 +1,11 @@
 ﻿using Application.Commands.CreateOrder;
+using Application.Messaging.Commands;
 using Domain.Errors;
 using Domain.Repositories;
 using FluentValidation;
 using Persistence.Repositories;
 
-namespace Application.Commands.UpdateOrder;
+namespace Application.Messaging.Commands.UpdateOrder;
 public sealed class UpdateOrderCommandValidator : AbstractValidator<OrderCommand>
 {
     private readonly IProviderRepository providerRepository;

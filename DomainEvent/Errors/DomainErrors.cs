@@ -20,4 +20,9 @@ public static class DomainErrors
     {
         public static string NotFound => "Поставщик не найден";
     }
+
+    public static class Paging
+    {
+        public static string PageLessThanOne => "Страница не может быть меньше 1";
+    }
 }
