@@ -1,5 +1,8 @@
-﻿namespace Application.DTO;
+﻿using Domain.Entities;
 
-public record OrderItemDto(string Name,
+namespace Application.DTO;
+
+public record OrderItemDto(OrderItemId? Id,
+                           string Name,
                            decimal Quantity,
                            string Unit);

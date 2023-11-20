@@ -3,7 +3,8 @@ using Domain.Entities;
 
 namespace Application.DTO;
 
-public record OrderDto(string Number,
+public record OrderDto(OrderId? Id,
+                       string Number,
                        DateTime Date,
                        ProviderId ProviderId,
                        OrderItemDto[] Items);

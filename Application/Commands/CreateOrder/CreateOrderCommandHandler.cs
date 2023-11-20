@@ -27,7 +27,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand>
         if (!validation.IsValid)
             return Result.Invalid(validation.AsErrors());
 
-
+        //AutoMapper nado
         var orderItems = request.orderDto.Items.ToList().ConvertAll(x => OrderItem.Create(x.Name, x.Quantity, x.Unit));
         Order order = Order.Create(request.orderDto.Number, request.orderDto.Date, request.orderDto.ProviderId, orderItems);
         orderRepository.Add(order);

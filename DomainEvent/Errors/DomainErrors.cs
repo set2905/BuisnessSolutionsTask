@@ -6,7 +6,7 @@ public static class DomainErrors
     {
         public static string NotFound => "Заказ не найден";
         public static string EmptyNumber => "Номер заказа не может быть пустым";
-        public static string MultiIndexExists => "Невозможно создать несколько заказов от одного поставщика с одинаковым номером";
+        public static string MultiIndexNotUnique => "Невозможно создать несколько заказов от одного поставщика с одинаковым номером";
     }
     public static class OrderItem
     {

@@ -24,6 +24,6 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<CreateOrderC
         {
             bool exists = await this.orderRepository.OrderExists(dto.Number, dto.ProviderId);
             return !exists;
-        }).WithMessage(DomainErrors.Order.MultiIndexExists);
+        }).WithMessage(DomainErrors.Order.MultiIndexNotUnique);
     }
 }
