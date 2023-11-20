@@ -13,8 +13,11 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<OrderCommand
     {
         this.providerRepository = providerRepository;
         this.orderRepository = orderRepository;
-        RuleFor(x => x.orderDto.Number).NotEmpty().WithMessage(DomainErrors.Order.EmptyNumber);
-        RuleFor(x => x.orderDto).Must(x => !x.Items.Any(i => x.Number.Equals(i.Name))).WithMessage(DomainErrors.Order.NumberEqualsToItemName);
+        RuleFor(x => x.orderDto.Number).NotEmpty()
+                                       .WithMessage(DomainErrors.Order.EmptyNumber);
+
+        RuleFor(x => x.orderDto).Must(x => !x.Items.Any(i => x.Number.Equals(i.Name)))
+            .WithMessage(DomainErrors.Order.NumberEqualsToItemName);
 
         RuleFor(x => x.orderDto.ProviderId).MustAsync(async (id, cancellation) =>
         {
