@@ -1,8 +1,10 @@
 ﻿using Application.DTO;
+using Application.Members.Queries.FindOrders;
 using Application.Messaging.Commands.CreateOrder;
 using Application.Messaging.Commands.UpdateOrder;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
+using Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Controllers.Abstractions;
@@ -17,12 +19,17 @@ public sealed class OrdersController : ApiController
     {
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("find")]
     [TranslateResultToActionResult]
-    public async Task<Result> FindOrders(, CancellationToken cancellationToken)
+    public async Task<Result<OrderDto[]>> FindOrders(DateTime startDate,
+                                                     DateTime endDate,
+                                                     int page,
+                                                     OrderFilter? filter,
+                                                     CancellationToken cancellationToken)
     {
-
+        var query = new FindOrdersQuery(startDate, endDate, page, filter);
+        return await sender.Send(query, cancellationToken);
     }
 
     [HttpPost]
