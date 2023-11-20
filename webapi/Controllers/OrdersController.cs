@@ -1,6 +1,6 @@
-﻿using Application.Commands.CreateOrder;
-using Application.Commands.UpdateOrder;
-using Application.DTO;
+﻿using Application.DTO;
+using Application.Messaging.Commands.CreateOrder;
+using Application.Messaging.Commands.UpdateOrder;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
 using MediatR;

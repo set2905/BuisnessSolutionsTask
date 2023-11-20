@@ -6,7 +6,7 @@ using Domain.Repositories;
 using Persistence;
 using Persistence.Repositories;
 
-namespace Application.Commands.CreateOrder;
+namespace Application.Messaging.Commands.CreateOrder;
 public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand>
 {
     private readonly IUnitOfWork unitOfWork;
@@ -17,9 +17,9 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand>
                                      IOrderRepository orderRepository,
                                      IProviderRepository providerRepository)
     {
-        this.unitOfWork=unitOfWork;
-        this.orderRepository=orderRepository;
-        this.providerRepository=providerRepository;
+        this.unitOfWork = unitOfWork;
+        this.orderRepository = orderRepository;
+        this.providerRepository = providerRepository;
     }
 
     public async Task<Result> Handle(CreateOrderCommand request, CancellationToken cancellationToken)

@@ -1,7 +1,8 @@
 ﻿using Application.Abstractions;
 using Application.DTO;
+using Application.Messaging.Commands;
 
-namespace Application.Commands.UpdateOrder;
+namespace Application.Messaging.Commands.UpdateOrder;
 
 public sealed record UpdateOrderCommand : OrderCommand
 {

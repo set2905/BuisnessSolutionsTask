@@ -1,6 +1,4 @@
-﻿using Application.Commands.CreateOrder;
-using Application.Messaging.Commands;
-using Domain.Errors;
+﻿using Domain.Errors;
 using Domain.Repositories;
 using FluentValidation;
 using Persistence.Repositories;
