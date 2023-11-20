@@ -23,6 +23,15 @@ public sealed class OrderItem
     public string Unit { get; private set; }
 
 
+    public void Modify(string name, decimal quantity, string unit)
+    {
+        Guard.Against.NullOrEmpty(name, nameof(name), DomainErrors.OrderItem.EmptyName);
+        Guard.Against.NullOrEmpty(unit, nameof(unit), DomainErrors.OrderItem.EmptyUnit);
+        Guard.Against.Negative(quantity, nameof(quantity), DomainErrors.OrderItem.NegativeQuantity);
+        Name=name;
+        Quantity=quantity;
+        Unit=unit;
+    }
     public static OrderItem Create(string name, decimal quantity, string unit)
     {
         Guard.Against.NullOrEmpty(name, nameof(name), DomainErrors.OrderItem.EmptyName);

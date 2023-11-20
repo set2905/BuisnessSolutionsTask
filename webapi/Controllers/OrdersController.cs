@@ -1,4 +1,5 @@
 ﻿using Application.Commands.CreateOrder;
+using Application.Commands.UpdateOrder;
 using Application.DTO;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
@@ -22,6 +23,14 @@ public sealed class OrdersController : ApiController
     public async Task<Result> CreateOrder(OrderDto orderDto, CancellationToken cancellationToken)
     {
         var command = new CreateOrderCommand(orderDto);
+        return await sender.Send(command, cancellationToken);
+    }
+    [HttpPost]
+    [Route("update")]
+    [TranslateResultToActionResult]
+    public async Task<Result> UpdateOrder(OrderDto orderDto, CancellationToken cancellationToken)
+    {
+        var command = new UpdateOrderCommand(orderDto);
         return await sender.Send(command, cancellationToken);
     }
 }

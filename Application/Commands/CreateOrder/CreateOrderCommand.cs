@@ -4,4 +4,9 @@ using Domain.Entities;
 
 namespace Application.Commands.CreateOrder;
 
-public sealed record CreateOrderCommand(OrderDto orderDto) : ICommand;
+public sealed record CreateOrderCommand : OrderCommand
+{
+    public CreateOrderCommand(OrderDto orderDto) : base(orderDto)
+    {
+    }
+}

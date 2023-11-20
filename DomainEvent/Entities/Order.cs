@@ -31,6 +31,13 @@ public sealed class Order
         items.Add(item);
         return item;
     }
+    public void Modify(string number, DateTime date, ProviderId providerId)
+    {
+        Guard.Against.NullOrEmpty(number, nameof(number), DomainErrors.Order.EmptyNumber);
+        Number = number;
+        Date = date;
+        ProviderId = providerId;
+    }
     public static Order Create(string number, DateTime date, ProviderId providerId, IEnumerable<OrderItem> items)
     {
         Guard.Against.NullOrEmpty(number, nameof(number), DomainErrors.Order.EmptyNumber);

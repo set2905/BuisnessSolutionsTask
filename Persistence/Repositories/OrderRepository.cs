@@ -22,10 +22,10 @@ internal class OrderRepository : IOrderRepository
             .SingleOrDefaultAsync(x => x.Id==orderId);
     }
 
-    public async Task<bool> OrderExists(string orderNumber, ProviderId providerId)
+    public async Task<bool> IsOrderUnique(OrderId? id, string orderNumber, ProviderId providerId)
     {
-        return await dbContext.Set<Order>()
-            .AnyAsync(x => x.Number==orderNumber&&x.ProviderId==providerId);
+        return !await dbContext.Set<Order>()
+            .AnyAsync(x => x.Number==orderNumber&&x.ProviderId==providerId&x.Id!=id);
     }
 
     public async Task<List<Order>> GetOrdersAsync(int page, DateTime startDate, DateTime endDate)
@@ -42,5 +42,9 @@ internal class OrderRepository : IOrderRepository
     public void Add(Order order)
     {
         dbContext.Set<Order>().Add(order);
+    }
+    public void Update(Order order)
+    {
+        dbContext.Set<Order>().Update(order);
     }
 }

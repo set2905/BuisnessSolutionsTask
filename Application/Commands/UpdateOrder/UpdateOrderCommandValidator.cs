@@ -1,15 +1,15 @@
-﻿using Domain.Errors;
+﻿using Application.Commands.CreateOrder;
+using Domain.Errors;
 using Domain.Repositories;
 using FluentValidation;
 using Persistence.Repositories;
 
-namespace Application.Commands.CreateOrder;
-
-public sealed class CreateOrderCommandValidator : AbstractValidator<OrderCommand>
+namespace Application.Commands.UpdateOrder;
+public sealed class UpdateOrderCommandValidator : AbstractValidator<OrderCommand>
 {
     private readonly IProviderRepository providerRepository;
     private readonly IOrderRepository orderRepository;
-    public CreateOrderCommandValidator(IProviderRepository providerRepository, IOrderRepository orderRepository)
+    public UpdateOrderCommandValidator(IProviderRepository providerRepository, IOrderRepository orderRepository)
     {
         this.providerRepository = providerRepository;
         this.orderRepository = orderRepository;
@@ -25,5 +25,7 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<OrderCommand
             bool isUnique = await this.orderRepository.IsOrderUnique(dto.Id, dto.Number, dto.ProviderId);
             return isUnique;
         }).WithMessage(DomainErrors.Order.MultiIndexNotUnique);
+
+        RuleFor(x => x.orderDto.Id).NotNull().WithMessage(DomainErrors.Order.IdNull);
     }
 }
