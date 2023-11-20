@@ -22,7 +22,13 @@ internal class OrderRepository : IOrderRepository
             .SingleOrDefaultAsync(x => x.Id==orderId);
     }
 
-    public async Task<List<Order>> GetOrders(int page, DateTime startDate, DateTime endDate)
+    public async Task<bool> OrderExists(string orderNumber, ProviderId providerId)
+    {
+        return await dbContext.Set<Order>()
+            .AnyAsync(x => x.Number==orderNumber&&x.ProviderId==providerId);
+    }
+
+    public async Task<List<Order>> GetOrdersAsync(int page, DateTime startDate, DateTime endDate)
     {
         var baseQuery = dbContext.Set<Order>()
              .Where(x => x.Date>=startDate && x.Date<=endDate)
@@ -30,7 +36,6 @@ internal class OrderRepository : IOrderRepository
              .Take(DEFAULT_PAGESIZE)
              .Include(x => x.Items)
              .Include(x => x.Provider);
-
         return await baseQuery.ToListAsync();
     }
 

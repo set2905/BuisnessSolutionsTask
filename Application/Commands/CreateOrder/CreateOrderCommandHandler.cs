@@ -22,7 +22,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand>
 
     public async Task<Result> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreateOrderCommandValidator(providerRepository);
+        var validator = new CreateOrderCommandValidator(providerRepository, orderRepository);
         var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
             return Result.Invalid(validation.AsErrors());
