@@ -29,7 +29,7 @@ public sealed class FindOrdersQueryHandler : IQueryHandler<FindOrdersQuery, Orde
 
         OrderDto[] orders = (await orderRepository.FindOrdersAsync(request.startDate,
                                                                    request.endDate,
-                                                                   request.page,
+                                                                   request.page-1,
                                                                    request.filter))
                                                                    .ConvertAll(mapper.Map<OrderDto>)
                                                                    .ToArray();
