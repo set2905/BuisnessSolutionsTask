@@ -9,6 +9,7 @@ internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
     public void Configure(EntityTypeBuilder<Order> builder)
     {
         builder.HasKey(order => order.Id);
+        builder.Property(o => o.Id).ValueGeneratedOnAdd();
         builder.Property(o => o.Id).HasConversion(id => id.Value,
                              val => new(val));
 

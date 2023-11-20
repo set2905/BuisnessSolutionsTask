@@ -9,10 +9,8 @@ public sealed class OrderItem
     {
     }
 
-    internal OrderItem(OrderId orderId, string name, decimal quantity, string unit)
+    internal OrderItem(string name, decimal quantity, string unit)
     {
-        Id=new(0);
-        OrderId=orderId;
         Name=name;
         Quantity=quantity;
         Unit=unit;
@@ -25,12 +23,12 @@ public sealed class OrderItem
     public string Unit { get; private set; }
 
 
-    public static OrderItem Create(OrderId orderId, string name, decimal quantity, string unit)
+    public static OrderItem Create(string name, decimal quantity, string unit)
     {
         Guard.Against.NullOrEmpty(name, nameof(name), DomainErrors.OrderItem.EmptyName);
         Guard.Against.NullOrEmpty(unit, nameof(unit), DomainErrors.OrderItem.EmptyUnit);
-        Guard.Against.Negative(quantity, nameof(quantity), "Quantity cannot be negative");
-        var orderItem = new OrderItem(orderId, name, quantity, unit);
+        Guard.Against.Negative(quantity, nameof(quantity), DomainErrors.OrderItem.NegativeQuantity);
+        var orderItem = new OrderItem(name, quantity, unit);
         return orderItem;
     }
 }
