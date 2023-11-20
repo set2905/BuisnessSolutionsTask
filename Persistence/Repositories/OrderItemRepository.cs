@@ -18,7 +18,7 @@ public sealed class OrderItemRepository : IOrderItemRepository
         var query = dbContext.Set<OrderItem>().Select(x => x.Name);
         if (search!=null)
             query=query.Where(x => x.Contains(search));
-        return await query.Take(DEFAULT_PAGESIZE).ToListAsync();
+        return await query.Distinct().Take(DEFAULT_PAGESIZE).ToListAsync();
     }
 
     public async Task<List<string>> GetOrderItemUnitsAsync(string? search)
@@ -26,6 +26,6 @@ public sealed class OrderItemRepository : IOrderItemRepository
         var query = dbContext.Set<OrderItem>().Select(x => x.Unit);
         if (search!=null)
             query=query.Where(x => x.Contains(search));
-        return await query.Take(DEFAULT_PAGESIZE).ToListAsync();
+        return await query.Distinct().Take(DEFAULT_PAGESIZE).ToListAsync();
     }
 }

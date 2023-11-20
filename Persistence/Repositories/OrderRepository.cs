@@ -59,12 +59,9 @@ public sealed class OrderRepository : IOrderRepository
     {
         var query = dbContext.Set<Order>().Select(x => x.Number);
         if (search!=null)
-            query=query.Where(x => x.Contains(search)).Distinct();
-        return await query.Take(DEFAULT_PAGESIZE).ToListAsync();
+            query=query.Where(x => x.Contains(search));
+        return await query.Distinct().Take(DEFAULT_PAGESIZE).ToListAsync();
     }
-
-
-
 
 
     public void Add(Order order)
