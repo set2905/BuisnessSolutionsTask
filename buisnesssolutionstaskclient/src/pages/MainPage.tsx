@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import DebounceSelect from '../components/DebounceSelect'
 import cloneDeep from 'lodash.clonedeep';
 import { DefaultOptionType } from 'antd/es/select';
+import OrderForm from '../components/OrderForm';
 
 const { RangePicker } = DatePicker;
 
@@ -87,6 +88,7 @@ function _MainPage() {
     ];
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+            <OrderForm/>
             <RangePicker
                 defaultValue={[dayjs(getCurrentDate(-1), dateFormat), dayjs(getCurrentDate(0), dateFormat)]}
                 onChange={(_, dateStrings) => {
@@ -133,7 +135,7 @@ function _MainPage() {
             />
             <DebounceSelect
                 mode="multiple"
-                placeholder="Select order item names"
+                placeholder="Select order providers"
                 fetchOptions={fetchDistinctProviders}
                 onChange={(value) => {
                     const copy = cloneDeep(filter) as TableFilters;
@@ -144,6 +146,8 @@ function _MainPage() {
                 style={{ width: '100%' }}
             />
             <Button loading={loading} onClick={() => { loadOrders() }}>Apply filters</Button>
+            <Button loading={loading} onClick={() => { loadOrders() }}>Add new order</Button>
+
             <Table dataSource={orders} columns={columns} loading={loading} />
         </Space>
     );
