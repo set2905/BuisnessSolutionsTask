@@ -1,4 +1,5 @@
-import { DatePicker, Table, Space, Button } from 'antd';
+import { DatePicker, Table, Space, Button, Drawer } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { Client, OrderDto, OrderFilter, ProviderDto, ProviderId } from "../clients";
 import dayjs from 'dayjs';
@@ -6,10 +7,12 @@ import DebounceSelect from '../components/DebounceSelect'
 import cloneDeep from 'lodash.clonedeep';
 import { DefaultOptionType } from 'antd/es/select';
 import OrderForm from '../components/OrderForm';
+import { ColumnsType } from 'antd/es/table';
 
 const { RangePicker } = DatePicker;
 
 function _MainPage() {
+
     const dateFormat = 'YYYY-MM-DD';
     const client = new Client("https://localhost:7201");
 
@@ -20,7 +23,8 @@ function _MainPage() {
         orderFilter: OrderFilter
     }
 
-
+    const [isEditOrderOpen, setEditOrderOpen] = useState(false);
+    const [orderToEdit, setOrderToEdit] = useState<OrderDto | undefined>();
     const [orders, setOrders] = useState<OrderDto[] | undefined>();
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState<TableFilters>({
@@ -34,6 +38,15 @@ function _MainPage() {
             providerFilter: undefined
         }
     });
+
+
+    const showEditOrder = () => {
+        setEditOrderOpen(true);
+    };
+
+    const onEditOrderClose = () => {
+        setEditOrderOpen(false);
+    };
 
     function getCurrentDate(offset: number): string {
         const today = new Date();
@@ -74,7 +87,7 @@ function _MainPage() {
         loadOrders();
     }, []);
 
-    const columns = [
+    const columns: ColumnsType<OrderDto> = [
         {
             title: 'Number',
             dataIndex: 'number',
@@ -85,10 +98,33 @@ function _MainPage() {
             dataIndex: 'date',
             key: 'date',
         },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <Button onClick={() => {
+                        setOrderToEdit(record);
+                        setEditOrderOpen(true);
+                    }}>View</Button>
+                </Space>
+            ),
+        },
     ];
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-            <OrderForm/>
+            <Drawer
+                title="EditOrder"
+                width={720}
+                onClose={onEditOrderClose}
+                open={isEditOrderOpen}
+                styles={{
+                    body: {
+                        paddingBottom: 80,
+                    },
+                }}>
+                <OrderForm existingOrder={orderToEdit} />
+            </Drawer>
             <RangePicker
                 defaultValue={[dayjs(getCurrentDate(-1), dateFormat), dayjs(getCurrentDate(0), dateFormat)]}
                 onChange={(_, dateStrings) => {
@@ -146,9 +182,11 @@ function _MainPage() {
                 style={{ width: '100%' }}
             />
             <Button loading={loading} onClick={() => { loadOrders() }}>Apply filters</Button>
-            <Button loading={loading} onClick={() => { loadOrders() }}>Add new order</Button>
+            <Button type="primary" onClick={showEditOrder} icon={<PlusOutlined />}>
+                New order
+            </Button>
 
-            <Table dataSource={orders} columns={columns} loading={loading} />
+            <Table dataSource={orders} columns={columns} loading={loading}/>
         </Space>
     );
 }

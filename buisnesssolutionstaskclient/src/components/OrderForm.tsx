@@ -4,9 +4,12 @@ import cloneDeep from 'lodash.clonedeep';
 import Select, { DefaultOptionType } from 'antd/es/select';
 import { useState } from 'react';
 
+export interface OrderFormProps {
+    existingOrder?: OrderDto;
+}
 const client = new Client("https://localhost:7201");
 
-function OrderForm(existingOrder?: OrderDto) {
+function OrderForm({ existingOrder }: OrderFormProps) {
     const [order, setOrder] = useState<OrderDto>(initOrder(existingOrder));
     const [providerSelectProps, setProviderSelectProps] = useState<DefaultOptionType[]>([]);
     const [selectedProviderOption, setSelectedProviderOption] = useState<number>();
@@ -15,6 +18,7 @@ function OrderForm(existingOrder?: OrderDto) {
     function initOrder(existingOrder?: OrderDto): OrderDto {
         if (existingOrder == undefined || existingOrder.id == undefined)
             return { number: "", date: "", providerId: { value: 0 }, items: [] }
+
         return existingOrder;
     }
     async function fetchDistinctProviders(search: string) {
@@ -31,7 +35,7 @@ function OrderForm(existingOrder?: OrderDto) {
     const handleChange = (newValue: number) => {
         setSelectedProviderOption(newValue);
         const copy = cloneDeep(order) as OrderDto;
-        copy.providerId = { value: newValue}
+        copy.providerId = { value: newValue }
         setOrder(copy);
     };
 
@@ -66,19 +70,21 @@ function OrderForm(existingOrder?: OrderDto) {
         copy.number = e.target.value;
         setOrder(copy);
     };
+
     return (
         <Space direction="vertical" size="middle">
             {contextHolder}
             <Input placeholder="Please enter order number"
+                defaultValue={order.number}
                 onChange={onNumberChange} />
             <Select
                 showSearch
+                defaultValue={order.providerId?.value}
                 value={selectedProviderOption}
                 placeholder="Select provider"
                 onSearch={fetchDistinctProviders}
                 onChange={handleChange}
-                options={providerSelectProps}
-            />
+                options={providerSelectProps} />
             <DatePicker onChange={(_, dateString) => {
                 const copy = cloneDeep(order) as OrderDto;
                 copy.date = dateString;
