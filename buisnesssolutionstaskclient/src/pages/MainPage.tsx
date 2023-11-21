@@ -40,7 +40,7 @@ function _MainPage() {
 
     React.useEffect(() => {
         loadOrders();
-    }, [filter]);
+    }, []);
 
     const columns = [
         {
@@ -56,7 +56,7 @@ function _MainPage() {
     ];
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-            {/*<Button loading={loading} onClick={() => { applyFilters() }}>Apply filters</Button>*/}
+            <Button loading={loading} onClick={() => { loadOrders() }}>Apply filters</Button>
             <RangePicker
                 defaultValue={[dayjs(getCurrentDate(-1), dateFormat), dayjs(getCurrentDate(0), dateFormat)]}
                 onChange={(dates, dateStrings) => setFilter({
@@ -64,8 +64,9 @@ function _MainPage() {
                 dateEnd: dateStrings[1],
                 page: filter.page,
                 orderFilter: filter.orderFilter
-            })}/>
-                <Table dataSource={orders} columns={columns} loading={loading} />
+                })} />
+
+            <Table dataSource={orders} columns={columns} loading={loading} />
         </Space>
     );
 }
