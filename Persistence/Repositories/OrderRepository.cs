@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Persistence.Repositories;
 
@@ -75,14 +76,14 @@ public sealed class OrderRepository : IOrderRepository
 
     private IQueryable<Order> ApplyFilters(IQueryable<Order> query, OrderFilter filter)
     {
-        if (filter.numberFilter!=null)
-            query=query.Where(o => filter.numberFilter.Any(n => o.Number.Equals(n)));
-        if (filter.providerFilter!=null)
-            query=query.Where(o => filter.providerFilter.Any(id => id==o.ProviderId));
-        if (filter.orderItemNameFilter!=null)
-            query=query.Where(o => o.Items.Any(i => filter.orderItemNameFilter.Contains(i.Name)));
-        if (filter.orderItemUnitFilter!=null)
-            query=query.Where(o => o.Items.Any(i => filter.orderItemUnitFilter.Contains(i.Unit)));
+        if (!filter.numberFilter.IsNullOrEmpty())
+            query=query.Where(o => filter.numberFilter!.Any(n => o.Number.Equals(n)));
+        if (!filter.providerFilter!.IsNullOrEmpty())
+            query=query.Where(o => filter.providerFilter!.Any(id => id==o.ProviderId));
+        if (!filter.orderItemNameFilter.IsNullOrEmpty())
+            query=query.Where(o => o.Items.Any(i => filter.orderItemNameFilter!.Contains(i.Name)));
+        if (!filter.orderItemUnitFilter.IsNullOrEmpty())
+            query=query.Where(o => o.Items.Any(i => filter.orderItemUnitFilter!.Contains(i.Unit)));
 
 
         return query;

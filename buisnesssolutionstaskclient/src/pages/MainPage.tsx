@@ -1,6 +1,6 @@
 import { DatePicker, Table, Space, Button } from 'antd';
 import React, { useState } from 'react';
-import { Client, OrderDto, OrderFilter } from "../clients";
+import { Client, OrderDto, OrderFilter, ProviderDto, ProviderId } from "../clients";
 import dayjs from 'dayjs';
 import DebounceSelect from '../components/DebounceSelect'
 import cloneDeep from 'lodash.clonedeep';
@@ -54,6 +54,21 @@ function _MainPage() {
         return result.map((x) => { return { label: x, value: x } });
     }
 
+    async function fetchDistinctOrderItemUnits(search: string): Promise<DefaultOptionType[]> {
+        const result = (await client.findOrderItemUnits(search)) as string[];
+        return result.map((x) => { return { label: x, value: x } });
+    }
+
+    async function fetchDistinctOrderItemNames(search: string): Promise<DefaultOptionType[]> {
+        const result = (await client.findOrderItemNames(search)) as string[];
+        return result.map((x) => { return { label: x, value: x } });
+    }
+
+    async function fetchDistinctProviders(search: string): Promise<DefaultOptionType[]> {
+        const result = (await client.findGET(search)) as ProviderDto[];
+        return result.map((x) => { return { label: x.name, value: x.id?.value } });
+    }
+
     React.useEffect(() => {
         loadOrders();
     }, []);
@@ -82,13 +97,48 @@ function _MainPage() {
                 }} />
             <DebounceSelect
                 mode="multiple"
-                //value={filter.orderFilter.numberFilter}
                 placeholder="Select order numbers"
                 fetchOptions={fetchDistinctOrderNumbers}
                 onChange={(value) => {
                     const copy = cloneDeep(filter) as TableFilters;
                     const selected = value as DefaultOptionType[];
                     copy.orderFilter.numberFilter = selected.map((x) => x.value as string);
+                    setFilter(copy);
+                }}
+                style={{ width: '100%' }}
+            />
+            <DebounceSelect
+                mode="multiple"
+                placeholder="Select order item units"
+                fetchOptions={fetchDistinctOrderItemUnits}
+                onChange={(value) => {
+                    const copy = cloneDeep(filter) as TableFilters;
+                    const selected = value as DefaultOptionType[];
+                    copy.orderFilter.orderItemUnitFilter = selected.map((x) => x.value as string);
+                    setFilter(copy);
+                }}
+                style={{ width: '100%' }}
+            />
+            <DebounceSelect
+                mode="multiple"
+                placeholder="Select order item names"
+                fetchOptions={fetchDistinctOrderItemNames}
+                onChange={(value) => {
+                    const copy = cloneDeep(filter) as TableFilters;
+                    const selected = value as DefaultOptionType[];
+                    copy.orderFilter.orderItemNameFilter = selected.map((x) => x.value as string);
+                    setFilter(copy);
+                }}
+                style={{ width: '100%' }}
+            />
+            <DebounceSelect
+                mode="multiple"
+                placeholder="Select order item names"
+                fetchOptions={fetchDistinctProviders}
+                onChange={(value) => {
+                    const copy = cloneDeep(filter) as TableFilters;
+                    const selected = value as DefaultOptionType[];
+                    copy.orderFilter.providerFilter = selected.map<ProviderId>((x) => { return { value: x.value as number } });
                     setFilter(copy);
                 }}
                 style={{ width: '100%' }}
