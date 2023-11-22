@@ -97,7 +97,7 @@ function _MainPage() {
                 <Space size="middle">
                     <Button onClick={() => {
                         currentOrderStore.setOrder(record);
-                        navigate('/edit');
+                        navigate('/view');
                     }}>View</Button>
                 </Space>
             ),
