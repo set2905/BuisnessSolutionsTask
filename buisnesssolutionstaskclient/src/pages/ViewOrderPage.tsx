@@ -12,8 +12,7 @@ function ViewOrderPage() {
                 [
                     <Button onClick={()=>navigate('/edit')}>Edit</Button>,
                     <Button>Delete</Button>
-                ]}
-        >
+                ]}>
             <h3>Order Number:</h3>
             <p>{currentOrderStore.order.number}</p>
             <h3>Order date:</h3>

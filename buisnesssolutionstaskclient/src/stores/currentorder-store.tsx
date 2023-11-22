@@ -2,7 +2,7 @@ import { makeObservable, observable, action } from "mobx";
 import { OrderDto } from "../clients";
 
 class CurrentOrderStore {
-    order: OrderDto = { id: undefined, number: "", date: "", providerId: undefined, items: [] };
+    order: OrderDto = { id: undefined, number: "", date: "", provider: undefined, items: [] };
     constructor(order: OrderDto) {
         makeObservable(this, {
             order: observable,
@@ -16,10 +16,10 @@ class CurrentOrderStore {
         this.order = order;
     }
     clearOrder() {
-        this.order = { id: undefined, number: "", date: "", providerId: undefined, items: [] };
+        this.order = { id: undefined, number: "", date: "", provider: undefined, items: [] };
     }
 }
 
 export function createCurrentOrderStore() {
-    return new CurrentOrderStore({ id: undefined, number: "", date: "", providerId: undefined, items: [] });
+    return new CurrentOrderStore({ id: undefined, number: "", date: "", provider: undefined, items: [] });
 }

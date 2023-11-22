@@ -4,6 +4,7 @@ import cloneDeep from 'lodash.clonedeep';
 import Select, { DefaultOptionType } from 'antd/es/select';
 import { useState } from 'react';
 import { useStores } from '../hooks/useStores';
+import dayjs from 'dayjs';
 
 
 function OrderForm() {
@@ -11,6 +12,8 @@ function OrderForm() {
     const [order, setOrder] = useState<OrderDto>(currentOrderStore.order);
     const [providerSelectProps, setProviderSelectProps] = useState<DefaultOptionType[]>([]);
     const [messageApi, contextHolder] = message.useMessage();
+
+    const dateFormat = 'YYYY-MM-DD';
 
     async function fetchDistinctProviders(search: string) {
         const result = (await clientStore.client.findGET(search).catch(e => {
@@ -71,6 +74,7 @@ function OrderForm() {
             return 0;
     }
 
+
     return (
         <Space direction="vertical" size="middle">
             {contextHolder}
@@ -85,11 +89,13 @@ function OrderForm() {
                 onSearch={fetchDistinctProviders}
                 onChange={handleChange}
                 options={providerSelectProps} />
-            <DatePicker onChange={(_, dateString) => {
-                const copy = cloneDeep(order) as OrderDto;
-                copy.date = dateString;
-                setOrder(copy);
-            }} />
+            <DatePicker
+                defaultValue={dayjs(order.date, dateFormat)}
+                onChange={(_, dateString) => {
+                    const copy = cloneDeep(order) as OrderDto;
+                    copy.date = dateString;
+                    setOrder(copy);
+                }} />
             <Button onClick={onSubmit} type="primary">
                 Submit
             </Button>
