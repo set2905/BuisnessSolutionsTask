@@ -325,7 +325,7 @@ export interface OrderDto {
     id?: OrderId;
     number?: string | undefined;
     date?: string;
-    providerId?: ProviderId;
+    provider?: ProviderDto;
     items?: OrderItemDto[] | undefined;
 }
 
