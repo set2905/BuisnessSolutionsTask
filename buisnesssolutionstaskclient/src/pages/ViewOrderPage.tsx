@@ -10,7 +10,7 @@ function ViewOrderPage() {
         <Card title="Order View" bordered={false} style={{ width: 600 }}
             actions={
                 [
-                    <Button onClick={()=>navigate('/edit')}>Edit</Button>,
+                    <Button onClick={() => navigate('/edit')}>Edit</Button>,
                     <Button>Delete</Button>
                 ]}>
             <h3>Order Number:</h3>

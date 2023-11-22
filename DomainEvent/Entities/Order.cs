@@ -31,6 +31,11 @@ public sealed class Order
         items.Add(item);
         return item;
     }
+
+    public void RemoveOrderItem(OrderItemId id)
+    {
+        items.RemoveWhere(x => x.Id==id);
+    }
     public void Modify(string number, DateTime date, ProviderId providerId)
     {
         Guard.Against.NullOrEmpty(number, nameof(number), DomainErrors.Order.EmptyNumber);

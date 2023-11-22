@@ -1,4 +1,4 @@
-import { Input, DatePicker, Button, message, Space } from 'antd';
+import { Input, DatePicker, Button, message, Space, List, InputNumber } from 'antd';
 import { ApiException, OrderDto, ProviderDto } from '../clients'
 import cloneDeep from 'lodash.clonedeep';
 import Select, { DefaultOptionType } from 'antd/es/select';
@@ -96,10 +96,47 @@ function OrderForm() {
                     copy.date = dateString;
                     setOrder(copy);
                 }} />
+            <List
+                header={<div>Order items</div>}
+                bordered
+                dataSource={order.items}
+                renderItem={(item) => (
+                    <List.Item>
+                        <Space direction="vertical">
+                            <h2>Item</h2>
+                            <Space>
+                                <p>Item name</p>
+                                <Input defaultValue={item.name} onChange={(val) => { item.name = val.target.value }}>
+                                </Input>
+                                <p>Quantity</p>
+                                <InputNumber defaultValue={item.quantity} onChange={(val) => { item.quantity = val ?? undefined }}>
+                                </InputNumber>
+                                <p>Unit</p>
+                                <Input defaultValue={item.unit} onChange={(val) => { item.unit = val.target.value }}>
+                                </Input>
+                                <Button onClick={() => {
+                                    const copy = cloneDeep(order) as OrderDto;
+                                    copy.items = copy.items?.filter(function (e) { return e.id?.value !== item.id?.value })
+                                    setOrder(copy);
+                                }}>
+                                    Remove this item
+                                </Button>
+                            </Space>
+                        </Space>
+                    </List.Item>
+                )}
+            />
+            <Button onClick={() => {
+                const copy = cloneDeep(order) as OrderDto;
+                copy.items?.push({});
+                setOrder(copy);
+            }}>
+                Add new item
+            </Button>
             <Button onClick={onSubmit} type="primary">
                 Submit
             </Button>
-        </Space>
+        </Space >
     );
 }
 

@@ -40,13 +40,19 @@ internal class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
             if (item.Id == null)
             {
                 order.AddOrderItem(item.Name, item.Quantity, item.Unit);
+                continue;
             }
-            else
-            {
-                OrderItem? foundItem = order.Items.SingleOrDefault(x => x.Id == item.Id);
-                if (foundItem == null) return Result.NotFound($"{DomainErrors.OrderItem.NotFound} {item.Name}");
-                foundItem.Modify(item.Name, item.Quantity, item.Unit);
-            }
+
+            OrderItem? foundItem = order.Items.SingleOrDefault(x => x.Id == item.Id);
+            if (foundItem == null) return Result.NotFound($"{DomainErrors.OrderItem.NotFound} {item.Name}");
+            foundItem.Modify(item.Name, item.Quantity, item.Unit);
+        }
+
+        var dtoItemsIds = request.orderDto.Items.Select(x => x.Id);
+        foreach (OrderItemId? itemId in order.Items.Select(x => x.Id))
+        {
+            if (!dtoItemsIds.Contains(itemId))
+                order.RemoveOrderItem(itemId);
         }
 
         orderRepository.Update(order);
