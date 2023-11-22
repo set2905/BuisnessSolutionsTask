@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useStores } from '../hooks/useStores';
 import dayjs from 'dayjs';
 
-
 function OrderForm() {
     const { currentOrderStore, clientStore } = useStores();
     const [order, setOrder] = useState<OrderDto>(currentOrderStore.order);
@@ -73,6 +72,7 @@ function OrderForm() {
         else
             return 0;
     }
+
 
 
     return (

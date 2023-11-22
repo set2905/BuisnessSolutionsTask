@@ -1,8 +1,10 @@
 import { makeObservable, observable, action } from "mobx";
 import { OrderDto } from "../clients";
+import dayjs from 'dayjs';
 
 class CurrentOrderStore {
-    order: OrderDto = { id: undefined, number: "", date: "", provider: undefined, items: [] };
+    order: OrderDto = { id: undefined, number: "", date: dayjs().toString(), provider: undefined, items: [] };
+
     constructor(order: OrderDto) {
         makeObservable(this, {
             order: observable,
@@ -21,5 +23,5 @@ class CurrentOrderStore {
 }
 
 export function createCurrentOrderStore() {
-    return new CurrentOrderStore({ id: undefined, number: "", date: "", provider: undefined, items: [] });
+    return new CurrentOrderStore({ id: undefined, number: "", date: dayjs().toString(), provider: undefined, items: [] });
 }

@@ -73,6 +73,10 @@ public sealed class OrderRepository : IOrderRepository
     {
         dbContext.Set<Order>().Update(order);
     }
+    public void Remove(Order order)
+    {
+        dbContext.Set<Order>().Remove(order);
+    }
 
     private IQueryable<Order> ApplyFilters(IQueryable<Order> query, OrderFilter filter)
     {

@@ -11,4 +11,5 @@ public interface IOrderRepository
     Task<bool> IsOrderUnique(OrderId? id, string orderNumber, ProviderId providerId);
     void Update(Order order);
     Task<List<string>> GetOrderNumbersAsync(string? search);
+    void Remove(Order order);
 }
