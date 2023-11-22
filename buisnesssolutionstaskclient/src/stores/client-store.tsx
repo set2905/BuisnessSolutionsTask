@@ -12,5 +12,6 @@ class ClientStore {
 }
 
 export function createClientStore() {
-    return new ClientStore(new Client("https://localhost:7201"));
+    const endpoint = process.env.REACT_APP_SERVICE_URI ? process.env.REACT_APP_SERVICE_URI : "https://localhost:7201";
+    return new ClientStore(new Client());
 }

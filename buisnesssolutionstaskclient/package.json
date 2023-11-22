@@ -13,6 +13,7 @@
     "@babel/plugin-proposal-decorators": "^7.23.3",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.debounce": "^4.0.9",
+    "@types/node": "^20.9.4",
     "antd": "^5.11.2",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",

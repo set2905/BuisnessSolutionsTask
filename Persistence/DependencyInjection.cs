@@ -13,7 +13,7 @@ public static class DependencyInjection
     {
         var connectionString = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION")?? configuration.GetConnectionString("DefaultConnection");
 
-        Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
+        Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found in env variables/appsettings.json");
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             options.UseSqlServer(connectionString);
