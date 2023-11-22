@@ -21,7 +21,12 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand>
         this.orderRepository = orderRepository;
         this.providerRepository = providerRepository;
     }
-
+    /// <summary>
+    /// Создает новый заказ
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<Result> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         var validator = new CreateOrderCommandValidator(providerRepository, orderRepository);

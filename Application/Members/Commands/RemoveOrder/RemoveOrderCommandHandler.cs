@@ -19,6 +19,12 @@ public sealed class RemoveOrderCommandHandler : ICommandHandler<RemoveOrderComma
         this.orderRepository=orderRepository;
     }
 
+    /// <summary>
+    /// Удаляет заказ из БД (совсем)
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<Result> Handle(RemoveOrderCommand request, CancellationToken cancellationToken)
     {
         Order? order = await orderRepository.GetByIdAsync(request.id);

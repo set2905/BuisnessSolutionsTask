@@ -22,6 +22,13 @@ internal class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
         this.providerRepository = providerRepository;
     }
 
+    /// <summary>
+    /// Редактирует заказ вместе с элементами заказа. 
+    /// Элемент заказа может быть добавлен/удален/отредактирован, в зависимости от id и текущего состояния
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<Result> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
         var validator = new UpdateOrderCommandValidator(providerRepository, orderRepository);
