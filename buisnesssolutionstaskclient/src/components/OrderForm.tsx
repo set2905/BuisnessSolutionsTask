@@ -3,24 +3,19 @@ import { ApiException, Client, OrderDto, ProviderDto } from '../clients'
 import cloneDeep from 'lodash.clonedeep';
 import Select, { DefaultOptionType } from 'antd/es/select';
 import { useState } from 'react';
+import { useStores } from '../hooks/useStores';
 
-export interface OrderFormProps {
-    existingOrder?: OrderDto;
-}
+
 const client = new Client("https://localhost:7201");
 
-function OrderForm({ existingOrder }: OrderFormProps) {
-    const [order, setOrder] = useState<OrderDto>(initOrder(existingOrder));
+function OrderForm() {
+    const { currentOrderStore } = useStores();
+
+    const [order, setOrder] = useState<OrderDto>(currentOrderStore.order);
     const [providerSelectProps, setProviderSelectProps] = useState<DefaultOptionType[]>([]);
     const [selectedProviderOption, setSelectedProviderOption] = useState<number>();
     const [messageApi, contextHolder] = message.useMessage();
 
-    function initOrder(existingOrder?: OrderDto): OrderDto {
-        if (existingOrder == undefined || existingOrder.id == undefined)
-            return { number: "", date: "", providerId: { value: 0 }, items: [] }
-
-        return existingOrder;
-    }
     async function fetchDistinctProviders(search: string) {
         const result = (await client.findGET(search).catch(e => {
             if (e instanceof ApiException) messageApi.open({

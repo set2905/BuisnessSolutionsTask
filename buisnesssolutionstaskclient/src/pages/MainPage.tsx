@@ -8,14 +8,15 @@ import cloneDeep from 'lodash.clonedeep';
 import { DefaultOptionType } from 'antd/es/select';
 import { ColumnsType } from 'antd/es/table';
 import { useStores } from '../hooks/useStores';
+import { useNavigate } from 'react-router-dom';
 
 const { RangePicker } = DatePicker;
 
 function _MainPage() {
-
     const dateFormat = 'YYYY-MM-DD';
     const client = new Client("https://localhost:7201");
     const { currentOrderStore } = useStores();
+    const navigate = useNavigate();
 
     interface TableFilters {
         dateStart: string,
@@ -97,6 +98,7 @@ function _MainPage() {
                 <Space size="middle">
                     <Button onClick={() => {
                         currentOrderStore.setOrder(record);
+                        navigate('/edit');
                     }}>View</Button>
                 </Space>
             ),
@@ -161,7 +163,7 @@ function _MainPage() {
                 style={{ width: '100%' }}
             />
             <Button loading={loading} onClick={() => { loadOrders() }}>Apply filters</Button>
-            <Button type="primary" onClick={() => { currentOrderStore.clearOrder(); }} icon={<PlusOutlined />}>
+            <Button type="primary" onClick={() => { currentOrderStore.clearOrder(); navigate('/edit'); }} icon={<PlusOutlined />}>
                 New order
             </Button>
 
