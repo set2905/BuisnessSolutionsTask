@@ -14,10 +14,14 @@ public sealed class ProviderRepository : IProviderRepository
         this.dbContext=dbContext;
     }
 
+    ///<inheritdoc/>
+
     public async Task<bool> ProviderExists(ProviderId id)
     {
         return await dbContext.Set<Provider>().AnyAsync(x => x.Id== id);
     }
+
+    ///<inheritdoc/>
 
     public async Task<List<Provider>> GetProvidersAsync(string? search)
     {

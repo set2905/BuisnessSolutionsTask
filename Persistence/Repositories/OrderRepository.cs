@@ -15,7 +15,7 @@ public sealed class OrderRepository : IOrderRepository
     {
         this.dbContext=dbContext;
     }
-
+   ///<inheritdoc/>
     public async Task<List<Order>> GetOrdersAsync(DateTime startDate,
                                                    DateTime endDate,
                                                    int page,
@@ -31,6 +31,8 @@ public sealed class OrderRepository : IOrderRepository
         return await query.Skip(page*DEFAULT_PAGESIZE).Take(DEFAULT_PAGESIZE).ToListAsync();
     }
 
+    ///<inheritdoc/>
+
     public async Task<Order?> GetByIdAsync(OrderId orderId)
     {
         return await dbContext.Set<Order>()
@@ -39,22 +41,15 @@ public sealed class OrderRepository : IOrderRepository
             .SingleOrDefaultAsync(x => x.Id==orderId);
     }
 
+    ///<inheritdoc/>
+
     public async Task<bool> IsOrderUnique(OrderId? id, string orderNumber, ProviderId providerId)
     {
         return !await dbContext.Set<Order>()
-            .AnyAsync(x => x.Number==orderNumber&&x.ProviderId==providerId&x.Id!=id);
+            .AnyAsync(x => x.Number==orderNumber&&x.ProviderId==providerId&&x.Id!=id);
     }
 
-    public async Task<List<Order>> GetOrdersAsync(int page, DateTime startDate, DateTime endDate)
-    {
-        var baseQuery = dbContext.Set<Order>()
-             .Where(x => x.Date>=startDate && x.Date<=endDate)
-             .Skip(page*DEFAULT_PAGESIZE)
-             .Take(DEFAULT_PAGESIZE)
-             .Include(x => x.Items)
-             .Include(x => x.Provider);
-        return await baseQuery.ToListAsync();
-    }
+    ///<inheritdoc/>
 
     public async Task<List<string>> GetOrderNumbersAsync(string? search)
     {

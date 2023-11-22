@@ -12,7 +12,7 @@ public sealed class OrderItemRepository : IOrderItemRepository
     {
         this.dbContext=dbContext;
     }
-
+    ///<inheritdoc/>
     public async Task<List<string>> GetOrderItemNamesAsync(string? search)
     {
         var query = dbContext.Set<OrderItem>().Select(x => x.Name);
@@ -20,6 +20,7 @@ public sealed class OrderItemRepository : IOrderItemRepository
             query=query.Where(x => x.Contains(search));
         return await query.Distinct().Take(DEFAULT_PAGESIZE).ToListAsync();
     }
+    ///<inheritdoc/>
 
     public async Task<List<string>> GetOrderItemUnitsAsync(string? search)
     {
