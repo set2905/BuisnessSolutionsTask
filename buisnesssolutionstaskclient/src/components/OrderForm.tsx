@@ -6,12 +6,10 @@ import { useState } from 'react';
 import { useStores } from '../hooks/useStores';
 
 
-
 function OrderForm() {
     const { currentOrderStore, clientStore } = useStores();
     const [order, setOrder] = useState<OrderDto>(currentOrderStore.order);
     const [providerSelectProps, setProviderSelectProps] = useState<DefaultOptionType[]>([]);
-    const [selectedProviderOption, setSelectedProviderOption] = useState<number>();
     const [messageApi, contextHolder] = message.useMessage();
 
     async function fetchDistinctProviders(search: string) {
@@ -25,10 +23,12 @@ function OrderForm() {
         setProviderSelectProps(opts);
     }
 
-    const handleChange = (newValue: number) => {
-        setSelectedProviderOption(newValue);
+    const handleChange = (value: { value: number; label: React.ReactNode }) => {
         const copy = cloneDeep(order) as OrderDto;
-        copy.providerId = { value: newValue }
+        copy.provider = {
+            id: { value: value.value },
+            name: value.label as string
+        };
         setOrder(copy);
     };
 
@@ -64,6 +64,13 @@ function OrderForm() {
         setOrder(copy);
     };
 
+    function initOrderNumber(): number {
+        if (order.provider != undefined && order.provider.id != undefined && order.provider.id.value != undefined)
+            return order.provider.id.value;
+        else
+            return 0;
+    }
+
     return (
         <Space direction="vertical" size="middle">
             {contextHolder}
@@ -72,8 +79,8 @@ function OrderForm() {
                 onChange={onNumberChange} />
             <Select
                 showSearch
-                defaultValue={order.providerId?.value}
-                value={selectedProviderOption}
+                labelInValue
+                defaultValue={{ value: initOrderNumber(), label: order.provider?.name }}
                 placeholder="Select provider"
                 onSearch={fetchDistinctProviders}
                 onChange={handleChange}
