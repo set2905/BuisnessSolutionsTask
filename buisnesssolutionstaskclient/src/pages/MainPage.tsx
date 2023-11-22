@@ -1,4 +1,4 @@
-import { DatePicker, Table, Space, Button, Drawer } from 'antd';
+import { DatePicker, Table, Space, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { Client, OrderDto, OrderFilter, ProviderDto, ProviderId } from "../clients";
@@ -6,8 +6,8 @@ import dayjs from 'dayjs';
 import DebounceSelect from '../components/DebounceSelect'
 import cloneDeep from 'lodash.clonedeep';
 import { DefaultOptionType } from 'antd/es/select';
-import OrderForm from '../components/OrderForm';
 import { ColumnsType } from 'antd/es/table';
+import { useStores } from '../hooks/useStores';
 
 const { RangePicker } = DatePicker;
 
@@ -15,6 +15,7 @@ function _MainPage() {
 
     const dateFormat = 'YYYY-MM-DD';
     const client = new Client("https://localhost:7201");
+    const { currentOrderStore } = useStores();
 
     interface TableFilters {
         dateStart: string,
@@ -23,8 +24,6 @@ function _MainPage() {
         orderFilter: OrderFilter
     }
 
-    const [isEditOrderOpen, setEditOrderOpen] = useState(false);
-    const [orderToEdit, setOrderToEdit] = useState<OrderDto | undefined>();
     const [orders, setOrders] = useState<OrderDto[] | undefined>();
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState<TableFilters>({
@@ -40,13 +39,6 @@ function _MainPage() {
     });
 
 
-    const showEditOrder = () => {
-        setEditOrderOpen(true);
-    };
-
-    const onEditOrderClose = () => {
-        setEditOrderOpen(false);
-    };
 
     function getCurrentDate(offset: number): string {
         const today = new Date();
@@ -104,8 +96,7 @@ function _MainPage() {
             render: (_, record) => (
                 <Space size="middle">
                     <Button onClick={() => {
-                        setOrderToEdit(record);
-                        setEditOrderOpen(true);
+                        currentOrderStore.setOrder(record);
                     }}>View</Button>
                 </Space>
             ),
@@ -113,18 +104,6 @@ function _MainPage() {
     ];
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-            <Drawer
-                title="EditOrder"
-                width={720}
-                onClose={onEditOrderClose}
-                open={isEditOrderOpen}
-                styles={{
-                    body: {
-                        paddingBottom: 80,
-                    },
-                }}>
-                <OrderForm existingOrder={orderToEdit} />
-            </Drawer>
             <RangePicker
                 defaultValue={[dayjs(getCurrentDate(-1), dateFormat), dayjs(getCurrentDate(0), dateFormat)]}
                 onChange={(_, dateStrings) => {
@@ -182,11 +161,11 @@ function _MainPage() {
                 style={{ width: '100%' }}
             />
             <Button loading={loading} onClick={() => { loadOrders() }}>Apply filters</Button>
-            <Button type="primary" onClick={showEditOrder} icon={<PlusOutlined />}>
+            <Button type="primary" onClick={() => { currentOrderStore.clearOrder(); }} icon={<PlusOutlined />}>
                 New order
             </Button>
 
-            <Table dataSource={orders} columns={columns} loading={loading}/>
+            <Table dataSource={orders} columns={columns} loading={loading} />
         </Space>
     );
 }
