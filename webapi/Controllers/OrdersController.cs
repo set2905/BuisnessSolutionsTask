@@ -1,9 +1,11 @@
 ﻿using Application.DTO;
+using Application.Members.Commands.RemoveOrder;
 using Application.Members.Queries.FindOrders;
 using Application.Messaging.Commands.CreateOrder;
 using Application.Messaging.Commands.UpdateOrder;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
+using Domain.Entities;
 using Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +48,15 @@ public sealed class OrdersController : ApiController
     public async Task<Result> UpdateOrder(OrderDto orderDto, CancellationToken cancellationToken)
     {
         var command = new UpdateOrderCommand(orderDto);
+        return await sender.Send(command, cancellationToken);
+    }
+
+    [HttpPost]
+    [Route("remove")]
+    [TranslateResultToActionResult]
+    public async Task<Result> RemoveOrder(OrderId orderId, CancellationToken cancellationToken)
+    {
+        var command = new RemoveOrderCommand(orderId);
         return await sender.Send(command, cancellationToken);
     }
 }

@@ -1,7 +1,4 @@
-﻿using Application.Abstractions;
-using Application.DTO;
-using Application.Messaging.Commands;
-using Domain.Entities;
+﻿using Application.DTO;
 
 namespace Application.Messaging.Commands.CreateOrder;
 
