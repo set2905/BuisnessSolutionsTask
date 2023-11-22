@@ -6,5 +6,5 @@ namespace Application.DTO;
 public record OrderDto(OrderId? Id,
                        string Number,
                        DateTime Date,
-                       ProviderId ProviderId,
+                       ProviderDto Provider,
                        OrderItemDto[] Items);

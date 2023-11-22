@@ -19,7 +19,7 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<OrderCommand
         RuleFor(x => x.orderDto).Must(x => !x.Items.Any(i => x.Number.Equals(i.Name)))
             .WithMessage(DomainErrors.Order.NumberEqualsToItemName);
 
-        RuleFor(x => x.orderDto.ProviderId).MustAsync(async (id, cancellation) =>
+        RuleFor(x => x.orderDto.Provider.Id).MustAsync(async (id, cancellation) =>
         {
             bool exists = await this.providerRepository.ProviderExists(id);
             return exists;
@@ -27,7 +27,7 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<OrderCommand
 
         RuleFor(x => x.orderDto).MustAsync(async (dto, cancellation) =>
         {
-            bool isUnique = await this.orderRepository.IsOrderUnique(dto.Id, dto.Number, dto.ProviderId);
+            bool isUnique = await this.orderRepository.IsOrderUnique(dto.Id, dto.Number, dto.Provider.Id);
             return isUnique;
         }).WithMessage(DomainErrors.Order.MultiIndexNotUnique);
     }

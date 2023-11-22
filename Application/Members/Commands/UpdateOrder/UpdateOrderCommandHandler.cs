@@ -34,7 +34,7 @@ internal class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
 
         order.Modify(request.orderDto.Number,
                      request.orderDto.Date,
-                     request.orderDto.ProviderId);
+                     request.orderDto.Provider.Id);
         foreach (var item in request.orderDto.Items)
         {
             if (item.Id == null)

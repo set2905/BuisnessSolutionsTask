@@ -32,7 +32,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand>
         var orderItems = request.orderDto.Items.ToList().ConvertAll(x => OrderItem.Create(x.Name, x.Quantity, x.Unit));
         Order order = Order.Create(request.orderDto.Number,
                                    request.orderDto.Date,
-                                   request.orderDto.ProviderId,
+                                   request.orderDto.Provider.Id,
                                    orderItems);
         orderRepository.Add(order);
         await unitOfWork.SaveChangesAsync();
