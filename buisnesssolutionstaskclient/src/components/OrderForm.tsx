@@ -1,23 +1,21 @@
 import { Input, DatePicker, Button, message, Space } from 'antd';
-import { ApiException, Client, OrderDto, ProviderDto } from '../clients'
+import { ApiException, OrderDto, ProviderDto } from '../clients'
 import cloneDeep from 'lodash.clonedeep';
 import Select, { DefaultOptionType } from 'antd/es/select';
 import { useState } from 'react';
 import { useStores } from '../hooks/useStores';
 
 
-const client = new Client("https://localhost:7201");
 
 function OrderForm() {
-    const { currentOrderStore } = useStores();
-
+    const { currentOrderStore, clientStore } = useStores();
     const [order, setOrder] = useState<OrderDto>(currentOrderStore.order);
     const [providerSelectProps, setProviderSelectProps] = useState<DefaultOptionType[]>([]);
     const [selectedProviderOption, setSelectedProviderOption] = useState<number>();
     const [messageApi, contextHolder] = message.useMessage();
 
     async function fetchDistinctProviders(search: string) {
-        const result = (await client.findGET(search).catch(e => {
+        const result = (await clientStore.client.findGET(search).catch(e => {
             if (e instanceof ApiException) messageApi.open({
                 type: 'error',
                 content: (e as ApiException).response,
@@ -38,7 +36,7 @@ function OrderForm() {
         if (order == undefined) return;
         let exception = false;
         if (order.id == undefined)
-            await client.create(order).catch(e => {
+            await clientStore.client.create(order).catch(e => {
                 exception = true;
                 if (e instanceof ApiException) messageApi.open({
                     type: 'error',
@@ -46,7 +44,7 @@ function OrderForm() {
                 });
             });
         else
-            await client.update(order).catch(e => {
+            await clientStore.client.update(order).catch(e => {
                 exception = true;
                 if (e instanceof ApiException) messageApi.open({
                     type: 'error',
@@ -69,7 +67,7 @@ function OrderForm() {
     return (
         <Space direction="vertical" size="middle">
             {contextHolder}
-            <Input placeholder="Please enter order number"
+            <Input placeholder="Please enter client number"
                 defaultValue={order.number}
                 onChange={onNumberChange} />
             <Select

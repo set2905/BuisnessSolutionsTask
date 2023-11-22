@@ -1,7 +1,7 @@
 import { DatePicker, Table, Space, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
-import { Client, OrderDto, OrderFilter, ProviderDto, ProviderId } from "../clients";
+import { OrderDto, OrderFilter, ProviderDto, ProviderId } from "../clients";
 import dayjs from 'dayjs';
 import DebounceSelect from '../components/DebounceSelect'
 import cloneDeep from 'lodash.clonedeep';
@@ -14,8 +14,7 @@ const { RangePicker } = DatePicker;
 
 function _MainPage() {
     const dateFormat = 'YYYY-MM-DD';
-    const client = new Client("https://localhost:7201");
-    const { currentOrderStore } = useStores();
+    const { currentOrderStore, clientStore } = useStores();
     const navigate = useNavigate();
 
     interface TableFilters {
@@ -51,28 +50,28 @@ function _MainPage() {
 
     async function loadOrders() {
         setLoading(true);
-        const result = await client.findPOST(filter.dateStart, filter.dateEnd, 1, filter.orderFilter);
+        const result = await clientStore.client.findPOST(filter.dateStart, filter.dateEnd, 1, filter.orderFilter);
         setOrders(result as OrderDto[]);
         setLoading(false);
     }
 
     async function fetchDistinctOrderNumbers(search: string): Promise<DefaultOptionType[]> {
-        const result = (await client.findOrderNumbers(search)) as string[];
+        const result = (await clientStore.client.findOrderNumbers(search)) as string[];
         return result.map((x) => { return { label: x, value: x } });
     }
 
     async function fetchDistinctOrderItemUnits(search: string): Promise<DefaultOptionType[]> {
-        const result = (await client.findOrderItemUnits(search)) as string[];
+        const result = (await clientStore.client.findOrderItemUnits(search)) as string[];
         return result.map((x) => { return { label: x, value: x } });
     }
 
     async function fetchDistinctOrderItemNames(search: string): Promise<DefaultOptionType[]> {
-        const result = (await client.findOrderItemNames(search)) as string[];
+        const result = (await clientStore.client.findOrderItemNames(search)) as string[];
         return result.map((x) => { return { label: x, value: x } });
     }
 
     async function fetchDistinctProviders(search: string): Promise<DefaultOptionType[]> {
-        const result = (await client.findGET(search)) as ProviderDto[];
+        const result = (await clientStore.client.findGET(search)) as ProviderDto[];
         return result.map((x) => { return { label: x.name, value: x.id?.value } });
     }
 

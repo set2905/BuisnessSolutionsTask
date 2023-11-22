@@ -1,9 +1,14 @@
 import OrderForm from '../components/OrderForm';
 
+
+
+
 function EditOrderPage() {
-  return (
-      <OrderForm/>
-  );
+    const { currentOrderStore, clientStore } = useStores();
+
+    return (
+        <OrderForm />
+    );
 }
 
 export default EditOrderPage;
