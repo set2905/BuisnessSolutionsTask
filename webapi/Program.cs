@@ -17,6 +17,7 @@ config.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
+//Не очень красиво
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173"));
 
 if (app.Environment.IsDevelopment())
