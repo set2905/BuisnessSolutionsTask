@@ -3,15 +3,20 @@ import { useStores } from '../hooks/useStores';
 import { Button, Card, List } from 'antd';
 
 function ViewOrderPage() {
-    const { currentOrderStore } = useStores();
+    const { currentOrderStore, clientStore } = useStores();
     const navigate = useNavigate();
+
+    async function removeOrder() {
+        await clientStore.client.remove(currentOrderStore.order.id);
+        navigate('/')
+    }
 
     return (
         <Card title="Order View" bordered={false} style={{ width: 600 }}
             actions={
                 [
                     <Button onClick={() => navigate('/edit')}>Edit</Button>,
-                    <Button>Delete</Button>
+                    <Button onClick={async () => { await removeOrder(); }}>Delete</Button>
                 ]}>
             <h3>Order Number:</h3>
             <p>{currentOrderStore.order.number}</p>
